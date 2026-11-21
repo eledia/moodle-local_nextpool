@@ -1,0 +1,136 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_nextpool/item_statistics_page
+
+    Tab "Statistics" of a catalogue item (F15): placements, data date, key figures in total and per
+    version as a table with caption and row headings, and notes that explain values shown as text.
+    Below 768 px the table rows are stacked with the column name before each value.
+
+    Values passed as HTML (triple braces) are produced by the renderable through format_string(), s()
+    or html_writer.
+
+    Context variables required for this template:
+    * title - string HTML, item title
+    * asof - string, "As of …", '' if never calculated
+    * notice - string, why there are no key figures (type without learning data, not calculated, not placed), '' with figures
+    * placements - array of {label, value (HTML)}
+    * hasrows - bool
+    * columns - array of {name, label}, columns after the version
+    * columncount - int, number of columns after the version
+    * rows - array of {label, withdrawn, withdrawnlabel, withdrawnclass, message, cells: [{label, value (HTML)}]}
+    * haslegend - bool
+    * legend - array of strings
+    * deletionhint - string, '' if never calculated
+    * anonymoushint - string, '' if never calculated
+
+    Example context (json):
+    {
+        "title": "Pump basics",
+        "asof": "As of 15 November 2026, 2:00 AM",
+        "notice": "",
+        "placements": [{"label": "Courses", "value": "2"}, {"label": "Activities", "value": "2"}],
+        "hasrows": true,
+        "columns": [{"name": "started", "label": "Started"}, {"name": "passrate", "label": "Pass rate"}],
+        "columncount": 2,
+        "rows": [
+            {"label": "Total", "withdrawn": false, "withdrawnlabel": "", "withdrawnclass": "bg-secondary", "message": "",
+             "cells": [{"label": "Started", "value": "10"}, {"label": "Pass rate", "value": "75%"}]},
+            {"label": "Version 1", "withdrawn": true, "withdrawnlabel": "Withdrawn", "withdrawnclass": "bg-secondary",
+             "message": "Fewer than 5 learners, no statistics yet", "cells": []}
+        ],
+        "haslegend": true,
+        "legend": ["Fewer than 5 learners: a value is shown only when it is based on at least 5 people."],
+        "deletionhint": "The figures can go down when learning data is deleted.",
+        "anonymoushint": "Only learners are counted, each person once."
+    }
+}}
+<div class="local-nextpool-stats">
+    <h2 class="h3 mb-2">{{{title}}}</h2>
+    {{#asof}}
+        <p class="text-muted mb-3">{{asof}}</p>
+    {{/asof}}
+    {{#notice}}
+        <div class="alert alert-info" role="status">{{notice}}</div>
+    {{/notice}}
+
+    <section class="mb-4" aria-labelledby="local-nextpool-stats-placements">
+        <h3 class="h5" id="local-nextpool-stats-placements">{{#str}} statsplacements, local_nextpool {{/str}}</h3>
+        <dl class="local-nextpool-stats__facts d-flex flex-wrap gap-4 mb-0">
+            {{#placements}}
+                <div>
+                    <dt class="small text-muted fw-normal">{{label}}</dt>
+                    <dd class="fs-5 fw-semibold mb-0">{{{value}}}</dd>
+                </div>
+            {{/placements}}
+        </dl>
+    </section>
+
+    {{#hasrows}}
+        <section class="mb-4" aria-labelledby="local-nextpool-stats-figures">
+            <h3 class="h5" id="local-nextpool-stats-figures">{{#str}} statsfigures, local_nextpool {{/str}}</h3>
+            {{#anonymoushint}}
+                <p>{{anonymoushint}}</p>
+            {{/anonymoushint}}
+            <table class="generaltable local-nextpool-table local-nextpool-table--stack local-nextpool-stats__table">
+                <caption>{{#str}} statscaption, local_nextpool {{/str}}</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">{{#str}} statsversion, local_nextpool {{/str}}</th>
+                        {{#columns}}
+                            <th scope="col">{{label}}</th>
+                        {{/columns}}
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#rows}}
+                        <tr>
+                            <th scope="row">
+                                {{label}}
+                                {{#withdrawn}}
+                                    <span class="badge {{withdrawnclass}} ms-1">{{withdrawnlabel}}</span>
+                                {{/withdrawn}}
+                            </th>
+                            {{#message}}
+                                <td colspan="{{columncount}}" class="local-nextpool-stats__message">{{message}}</td>
+                            {{/message}}
+                            {{^message}}
+                                {{#cells}}
+                                    <td data-label="{{label}}">{{{value}}}</td>
+                                {{/cells}}
+                            {{/message}}
+                        </tr>
+                    {{/rows}}
+                </tbody>
+            </table>
+        </section>
+    {{/hasrows}}
+
+    {{#haslegend}}
+        <section class="mb-4" aria-labelledby="local-nextpool-stats-notes">
+            <h3 class="h5" id="local-nextpool-stats-notes">{{#str}} statsnotes, local_nextpool {{/str}}</h3>
+            <ul class="mb-0">
+                {{#legend}}
+                    <li>{{.}}</li>
+                {{/legend}}
+                {{#deletionhint}}
+                    <li>{{deletionhint}}</li>
+                {{/deletionhint}}
+            </ul>
+        </section>
+    {{/haslegend}}
+</div>

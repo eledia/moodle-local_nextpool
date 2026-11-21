@@ -1,0 +1,53 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_nextpool/item_preview
+    A preview without learning records, plus full metadata and accessible content controls.
+    Example context (json): {"frame":false,"html":"<p>Content</p>","hashtml":true,"title":"Example","previewurl":"#"}
+}}
+<div class="local-nextpool-preview" data-region="local-nextpool-preview">
+    <p class="alert alert-info" id="local-nextpool-preview-notice">{{#str}} previewnotice, local_nextpool {{/str}}</p>
+    <div class="d-flex flex-wrap gap-2 mb-3" role="group" aria-label="{{#str}} previewcontrols, local_nextpool {{/str}}">
+        {{#frame}}<button type="button" class="btn btn-secondary" data-action="preview-fullscreen">{{#str}} previewfullscreen, local_nextpool {{/str}}</button>{{/frame}}
+        <a class="btn btn-secondary" href="{{#link}}{{contenturl}}{{/link}}{{^link}}{{previewurl}}{{/link}}" target="_blank" rel="noopener noreferrer">{{#str}} previewnewwindow, local_nextpool {{/str}}</a>
+    </div>
+    {{#chapters}}
+    <a href="{{urlpage}}" class="btn btn-outline-secondary mb-2" data-preview-chapter="{{index}}"{{#current}} aria-current="page"{{/current}}>{{title}}</a>
+    {{/chapters}}
+    <div data-region="local-nextpool-preview-content">
+        {{#message}}<p class="alert alert-info">{{message}}</p>{{/message}}
+        {{#frame}}
+        <p>{{#str}} previewkeyboard, local_nextpool {{/str}}</p>
+        <iframe class="local-nextpool-preview-frame w-100 border-0" src="{{contenturl}}" title="{{frametitle}}"
+            aria-describedby="local-nextpool-preview-notice" allowfullscreen
+            {{#sandboxed}}sandbox="allow-scripts allow-forms allow-popups allow-modals"{{/sandboxed}}></iframe>
+        {{/frame}}
+        {{#hashtml}}<div class="local-nextpool-preview-html">{{{html}}}</div>{{/hashtml}}
+        {{#image}}<img class="img-fluid" src="{{contenturl}}" alt="{{frametitle}}">{{/image}}
+        {{#video}}<video class="w-100" src="{{contenturl}}" controls controlsList="nodownload" aria-label="{{frametitle}}"></video>{{/video}}
+        {{#audio}}<audio src="{{contenturl}}" controls controlsList="nodownload" aria-label="{{frametitle}}"></audio>{{/audio}}
+        {{#link}}<p><a href="{{contenturl}}" target="_blank" rel="noopener noreferrer">{{contenturl}}</a></p>{{/link}}
+    </div>
+    <div class="mt-3">
+        <h4>{{#str}} previewinformation, local_nextpool {{/str}}</h4>
+        {{#hasdescription}}<div{{#contentlanguage}} lang="{{contentlanguage}}"{{/contentlanguage}}>{{{descriptionfull}}}</div>{{/hasdescription}}
+        {{#hasauthors}}<p>{{#str}} authors, local_nextpool {{/str}}: {{authorsfull}}</p>{{/hasauthors}}
+        <p>{{#str}} license {{/str}}: {{licensefull}}</p>
+        {{#category}}<p>{{#str}} category {{/str}}: {{category}}</p>{{/category}}
+        {{#tags}}<p>{{#str}} tags {{/str}}: {{{tags}}}</p>{{/tags}}
+    </div>
+</div>

@@ -1,0 +1,8 @@
+{
+    "subplugintypes": {
+        "nextpoolsource": "source"
+    },
+    "plugintypes": {
+        "nextpoolsource": "local/nextpool/source"
+    }
+}

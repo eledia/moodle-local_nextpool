@@ -1,0 +1,66 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_nextpool/item_dialog_feedback
+
+    Area "Feedback" of the item dialog (task173, fragment "itemdialog_feedback"): the latest comments in short, the
+    link to all comments on feedback.php and the place where the module loads the form for a new comment.
+
+    Context variables required for this template:
+    * itemid - int
+    * courseid - int, 0 for the editorial view
+    * hascomments - bool
+    * comments - array of {id, author, date, datefull, dateiso, text (plain), done}
+    * allurl - string, feedback.php
+
+    Example context (json):
+    {
+        "itemid": 1, "courseid": 2, "hascomments": true, "allurl": "#",
+        "comments": [
+            {"id": 3, "author": "Terry Teacher", "date": "15/11/26", "datefull": "Sunday, 15 November 2026, 10:00",
+             "dateiso": "2026-11-15T10:00:00+01:00", "text": "Please add the emergency numbers.", "done": false},
+            {"id": 2, "author": "Tina Tutor", "date": "14/11/26", "datefull": "Saturday, 14 November 2026, 9:00",
+             "dateiso": "2026-11-14T09:00:00+01:00", "text": "The address is missing.", "done": true}
+        ]
+    }
+}}
+<div class="local-nextpool-itemdialog__feedback" data-itemid="{{itemid}}" data-courseid="{{courseid}}">
+    <div class="d-flex flex-wrap align-items-baseline justify-content-between gap-2 mb-2">
+        <h3 class="h6 mb-0" id="local-nextpool-itemdialog-latest-{{itemid}}">{{#str}} commentslatest, local_nextpool {{/str}}</h3>
+        <a href="{{allurl}}">{{#str}} commentsall, local_nextpool {{/str}}</a>
+    </div>
+    {{#hascomments}}
+    <ol class="list-unstyled local-nextpool-itemdialog__comments mb-3" aria-labelledby="local-nextpool-itemdialog-latest-{{itemid}}">
+        {{#comments}}
+        <li class="local-nextpool-itemdialog__comment py-2">
+            <p class="small text-muted mb-1">
+                {{author}} <span aria-hidden="true">·</span>
+                <time datetime="{{dateiso}}" title="{{datefull}}">{{date}}</time>
+                {{#done}}<span class="badge bg-success ms-1">{{#str}} commentdone, local_nextpool {{/str}}</span>{{/done}}
+            </p>
+            <p class="mb-0">{{text}}</p>
+        </li>
+        {{/comments}}
+    </ol>
+    {{/hascomments}}
+    {{^hascomments}}
+    <p class="text-muted">{{#str}} nocomments, local_nextpool {{/str}}</p>
+    {{/hascomments}}
+    <div data-region="local-nextpool-itemdialog-form">
+        {{> core/loading }}
+    </div>
+</div>

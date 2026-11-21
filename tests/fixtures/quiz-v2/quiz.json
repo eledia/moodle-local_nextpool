@@ -1,0 +1,10 @@
+{
+    "format": "nextpool-quiz",
+    "version": 1,
+    "slots": [
+        {"question": "tf1", "page": 1, "maxmark": 2},
+        {"question": "sa1", "page": 1},
+        {"question": "mc1", "page": 2, "maxmark": 3},
+        {"question": "sa2", "page": 2}
+    ]
+}

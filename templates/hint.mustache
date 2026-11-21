@@ -1,0 +1,43 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_nextpool/hint
+
+    Static info notice in the page flow (MDS "Alert", type info, no dismiss). It is part of the page and is not
+    announced when the page loads, so it carries no role="alert" and no live region.
+
+    Context variables required for this template:
+    * icon - HTML of the info icon (decorative)
+    * text - plain text of the message
+    * linkurl - URL of the single action, optional
+    * linktext - text of the action, optional
+
+    Example context (json):
+    {
+        "icon": "<i class=\"icon fa fa-info fa-fw\" aria-hidden=\"true\"></i>",
+        "text": "1 matching item is not published yet and does not appear here.",
+        "linkurl": "https://example.com/local/nextpool/items.php",
+        "linktext": "Open the catalogue items"
+    }
+}}
+<div class="local-nextpool-hint alert alert-info d-flex align-items-start gap-2 mb-3">
+    <span class="flex-shrink-0">{{{icon}}}</span>
+    <div class="flex-grow-1">
+        <span>{{text}}</span>
+        {{#linkurl}}<a class="alert-link ms-1" href="{{linkurl}}">{{linktext}}</a>{{/linkurl}}
+    </div>
+</div>

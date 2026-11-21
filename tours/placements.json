@@ -1,0 +1,38 @@
+{
+  "name": "tour_placements_name,local_nextpool",
+  "description": "tour_placements_description,local_nextpool",
+  "pathmatch": "/local/nextpool/placements.php%",
+  "enabled": 1,
+  "displaystepnumbers": true,
+  "endtourlabel": "",
+  "configdata": "{\"placement\":\"bottom\",\"orphan\":false,\"backdrop\":true,\"reflex\":false,\"filtervalues\":{\"nextpool_audience\":[\"teacher\"],\"cssselector\":[\"[data-tour=\\\"placementstable\\\"]\"]}}",
+  "steps": [
+    {
+      "title": "tour_placements_1_title,local_nextpool",
+      "content": "tour_placements_1_content,local_nextpool",
+      "contentformat": 1,
+      "targettype": 0,
+      "targetvalue": "[data-tour=\"placementstable\"]",
+      "sortorder": 0,
+      "configdata": "{}"
+    },
+    {
+      "title": "tour_placements_2_title,local_nextpool",
+      "content": "tour_placements_2_content,local_nextpool",
+      "contentformat": 1,
+      "targettype": 0,
+      "targetvalue": "[data-region=\"policy-control\"]",
+      "sortorder": 1,
+      "configdata": "{}"
+    },
+    {
+      "title": "tour_placements_3_title,local_nextpool",
+      "content": "tour_placements_3_content,local_nextpool",
+      "contentformat": 1,
+      "targettype": 0,
+      "targetvalue": "[data-tour=\"placementproposal\"]",
+      "sortorder": 2,
+      "configdata": "{}"
+    }
+  ]
+}

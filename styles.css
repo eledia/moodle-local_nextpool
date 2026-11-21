@@ -1,0 +1,483 @@
+/*
+ * Catalogue area of local_nextpool (task64).
+ *
+ * eLeDia UX tokens (--lh-*) with their canonical defaults as fallbacks, because the plugin
+ * also runs on sites without local_lernhive or theme_lernhive. Layout, tabs and buttons come
+ * from Moodle core and Bootstrap; this file only adds the surfaces.
+ */
+
+/* Filter bar: soft panel above a list. */
+body.path-local-nextpool .local-nextpool-filter {
+    background-color: var(--lh-bg-soft, #f3f5f8);
+    border: 1px solid var(--lh-border, #dbe7ee);
+    border-radius: var(--lh-radius, 12px);
+}
+
+/* All filter fields share one width; a long option text must not widen the select or push its arrow out (task172). */
+body.path-local-nextpool .local-nextpool-filter__field {
+    flex: 0 1 16rem;
+    min-width: 0;
+    max-width: 100%;
+}
+
+body.path-local-nextpool .local-nextpool-filter__field .form-control,
+body.path-local-nextpool .local-nextpool-filter__field .form-select {
+    width: 100%;
+    max-width: 100%;
+    text-overflow: ellipsis;
+}
+
+/* Static info notice: icon and text in the alert colours, the action is a link inside. */
+body.path-local-nextpool .local-nextpool-hint .icon {
+    margin: 0;
+    color: inherit;
+}
+
+/* Tables sit in a card: white surface, light border, rounded corners. */
+body.path-local-nextpool #region-main .generaltable {
+    background-color: var(--lh-bg-white, #ffffff);
+    border: 1px solid var(--lh-border, #dbe7ee);
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: var(--lh-radius, 12px);
+    box-shadow: var(--lh-shadow-card, 0 2px 8px rgba(15, 23, 42, .05));
+}
+
+/* Round the corner cells instead of clipping the table, so dropdown menus
+   in the last row (e.g. the custom field actions) are not cut off. */
+body.path-local-nextpool #region-main .generaltable > :first-child > tr:first-child > :first-child {
+    border-top-left-radius: var(--lh-radius, 12px);
+}
+
+body.path-local-nextpool #region-main .generaltable > :first-child > tr:first-child > :last-child {
+    border-top-right-radius: var(--lh-radius, 12px);
+}
+
+body.path-local-nextpool #region-main .generaltable > :last-child > tr:last-child > :first-child {
+    border-bottom-left-radius: var(--lh-radius, 12px);
+}
+
+body.path-local-nextpool #region-main .generaltable > :last-child > tr:last-child > :last-child {
+    border-bottom-right-radius: var(--lh-radius, 12px);
+}
+
+body.path-local-nextpool #region-main .generaltable thead th {
+    background-color: var(--lh-primary-light, #f3f5f8);
+    color: var(--lh-text, #1f2937);
+    border-bottom: 1px solid var(--lh-border, #dbe7ee);
+}
+
+body.path-local-nextpool #region-main .generaltable td,
+body.path-local-nextpool #region-main .generaltable tbody th {
+    border-top: 1px solid var(--lh-border-light, #f0f0f0);
+}
+
+/* Section tabs: the active tab carries the single accent. */
+body.path-local-nextpool .local-nextpool-areanav .nav-tabs .nav-link.active {
+    border-bottom: 2px solid var(--lh-accent, #f98012);
+}
+
+/* Row and page actions as round icon buttons (.lh-icon-action pattern of the eLeDia UX system). */
+body.path-local-nextpool .local-nextpool-iconaction,
+body.path-local-nextpool .local-nextpool-rowmenu .dropdown-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    color: var(--lh-primary, #194866);
+    background-color: transparent;
+    transition: background-color .2s ease, transform .2s ease;
+}
+
+body.path-local-nextpool .local-nextpool-iconaction .icon,
+body.path-local-nextpool .local-nextpool-rowmenu .dropdown-toggle .icon {
+    margin: 0;
+}
+
+body.path-local-nextpool .local-nextpool-iconaction:hover,
+body.path-local-nextpool .local-nextpool-iconaction:focus-visible,
+body.path-local-nextpool .local-nextpool-rowmenu .dropdown-toggle:hover,
+body.path-local-nextpool .local-nextpool-rowmenu .dropdown-toggle:focus-visible {
+    background-color: var(--lh-primary-light, #f3f5f8);
+    color: var(--lh-primary-dark, #0f2b3d);
+    transform: scale(1.08);
+}
+
+/* Number of open comments on the feedback icon of a catalogue card (task173); white on primary, contrast 10:1. */
+body.path-local-nextpool .local-nextpool-feedbackaction {
+    position: relative;
+}
+
+body.path-local-nextpool .local-nextpool-feedbackcount {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    min-width: 1.25rem;
+    padding: .125rem .3rem;
+    font-size: .6875rem;
+    line-height: 1;
+    color: var(--lh-bg-white, #ffffff);
+    background-color: var(--lh-primary, #194866);
+    border: 1px solid var(--lh-bg-white, #ffffff);
+}
+
+body.path-local-nextpool .local-nextpool-iconaction--empty,
+body.path-local-nextpool .local-nextpool-iconaction--empty:hover {
+    visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.path-local-nextpool .local-nextpool-iconaction,
+    body.path-local-nextpool .local-nextpool-rowmenu .dropdown-toggle {
+        transition: none;
+    }
+}
+
+body.path-local-nextpool .local-nextpool-actions {
+    gap: var(--lh-spacing-xs, 4px);
+}
+
+body.path-local-nextpool #region-main .generaltable .local-nextpool-actionscell {
+    width: 1%;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+/* Item page: header with type picture, title, status and key facts. */
+body.path-local-nextpool .local-nextpool-item__header {
+    background-color: var(--lh-bg-white, #ffffff);
+    border: 1px solid var(--lh-border, #dbe7ee);
+    border-radius: var(--lh-radius, 12px);
+}
+
+body.path-local-nextpool .local-nextpool-item__icon {
+    width: 64px;
+    height: 64px;
+    border-radius: var(--lh-radius, 12px);
+    background-color: var(--lh-primary-light, #f3f5f8);
+}
+
+body.path-local-nextpool .local-nextpool-item__icon .activityicon {
+    width: 32px;
+    height: 32px;
+    margin: 0;
+}
+
+body.path-local-nextpool .local-nextpool-item__headline {
+    min-width: 0;
+    flex-basis: 16rem;
+}
+
+body.path-local-nextpool .local-nextpool-item__eyebrow {
+    color: var(--lh-text-secondary, #5f6b77);
+    letter-spacing: .04em;
+}
+
+body.path-local-nextpool .local-nextpool-item__actions {
+    border-top: 1px solid var(--lh-border-light, #f0f0f0);
+    padding-top: var(--lh-spacing-md, 16px);
+}
+
+/* Read-only fact chips: pills, never clickable. */
+body.path-local-nextpool .local-nextpool-chip {
+    padding: 2px 10px;
+    border: 1px solid var(--lh-border, #dbe7ee);
+    border-radius: var(--lh-radius-pill, 9999px);
+    background-color: var(--lh-bg-soft, #f3f5f8);
+    color: var(--lh-text, #1f2937);
+}
+
+body.path-local-nextpool .local-nextpool-chip .icon {
+    margin: 0;
+    color: var(--lh-text-secondary, #5f6b77);
+}
+
+/* Item facts in the card of the latest version (task165): an icon-only fact is focusable, so its tooltip opens
+   from the keyboard too; it is information, not an action, hence no hover growth and no round action shape. */
+body.path-local-nextpool .local-nextpool-factsicon {
+    min-width: 24px;
+    min-height: 24px;
+    border-radius: var(--lh-radius-sm, 8px);
+    color: var(--lh-text-secondary, #5f6b77);
+    cursor: help;
+}
+
+body.path-local-nextpool .local-nextpool-factsicon .icon {
+    margin: 0;
+}
+
+body.path-local-nextpool .local-nextpool-factsicon:focus-visible {
+    outline: 2px solid var(--lh-primary, var(--bs-primary, var(--primary)));
+    outline-offset: 2px;
+}
+
+body.path-local-nextpool .local-nextpool-itemfacts .local-nextpool-chip {
+    min-width: 0;
+    max-width: 100%;
+}
+
+/* Side panels of the item page: soft surfaces, not cards. */
+body.path-local-nextpool .local-nextpool-panel {
+    background-color: var(--lh-bg-soft, #f3f5f8);
+    border-radius: var(--lh-radius, 12px);
+}
+
+body.path-local-nextpool .local-nextpool-version {
+    border-color: var(--lh-border, #dbe7ee);
+    border-radius: var(--lh-radius, 12px);
+}
+
+/* Version line facts and detail values: small icons before the text (task105). */
+body.path-local-nextpool .local-nextpool-version__facts .icon,
+body.path-local-nextpool .local-nextpool-details .icon {
+    margin-inline-end: var(--lh-spacing-xs, 4px);
+    color: var(--lh-text-secondary, #5f6b77);
+}
+
+/* Links in the version line are targets of at least 24 px (WCAG 2.5.8). */
+body.path-local-nextpool .local-nextpool-version__facts a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+}
+
+body.path-local-nextpool .local-nextpool-current .icon {
+    margin: 0;
+    color: var(--lh-primary, #194866);
+}
+
+body.path-local-nextpool .local-nextpool-technical summary,
+body.path-local-nextpool .local-nextpool-version details summary {
+    cursor: pointer;
+}
+
+body.path-local-nextpool #region-main .generaltable .local-nextpool-countcell {
+    width: 1%;
+    white-space: nowrap;
+}
+
+/* Two columns from 992 px; below, the side panels follow the versions. No negative gutters, so no overflow at 320 px. */
+body.path-local-nextpool .local-nextpool-item__main,
+body.path-local-nextpool .local-nextpool-item__aside {
+    min-width: 0;
+}
+
+@media (min-width: 992px) {
+    body.path-local-nextpool .local-nextpool-item__body {
+        gap: var(--lh-spacing-lg, 24px);
+    }
+
+    body.path-local-nextpool .local-nextpool-item__main {
+        flex: 1 1 0;
+    }
+
+    body.path-local-nextpool .local-nextpool-item__aside {
+        flex: 0 0 33%;
+    }
+}
+
+/* Catalogue cards: compact; the place action is an icon, with a short label where there is no hover (touch). */
+body.path-local-nextpool .local-nextpool-catalogue .badge .icon {
+    margin: 0 .25rem 0 0;
+    width: 12px;
+    height: 12px;
+    font-size: 12px;
+}
+
+body.path-local-nextpool .local-nextpool-place .local-nextpool-placelabel {
+    display: none;
+}
+
+@media (hover: none) {
+    body.path-local-nextpool .local-nextpool-place .local-nextpool-placelabel {
+        display: inline;
+        margin-left: .25rem;
+    }
+}
+
+/* Section "Feedback" (F08, task81): replies indented under their comment, done threads collapsed. */
+body.path-local-nextpool .local-nextpool-feedback__thread {
+    border-bottom: 1px solid var(--lh-border-light, #f0f0f0);
+    padding-bottom: .75rem;
+}
+
+body.path-local-nextpool .local-nextpool-feedback__replies {
+    border-inline-start: 2px solid var(--lh-border, #dbe7ee);
+    padding-inline-start: 1rem;
+    margin-inline-start: .5rem;
+}
+
+body.path-local-nextpool .local-nextpool-comment__text > :last-child {
+    margin-bottom: 0;
+}
+
+body.path-local-nextpool .local-nextpool-feedback summary {
+    cursor: pointer;
+}
+
+/* Item list (task166): type icon before the title, pills for status, origin course and category. */
+body.path-local-nextpool .local-nextpool-titlecell {
+    gap: var(--lh-spacing-xs, 4px) var(--lh-spacing-sm, 8px);
+}
+
+body.path-local-nextpool .local-nextpool-typeicon {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--lh-spacing-xs, 4px);
+}
+
+body.path-local-nextpool .local-nextpool-typeicon .activityiconcontainer {
+    display: inline-flex;
+    width: 24px;
+    height: 24px;
+}
+
+body.path-local-nextpool .local-nextpool-typelabel {
+    display: none;
+}
+
+body.path-local-nextpool .local-nextpool-statuspill,
+body.path-local-nextpool .local-nextpool-originpill,
+body.path-local-nextpool .local-nextpool-categorypill {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--lh-spacing-xs, 4px);
+}
+
+body.path-local-nextpool .local-nextpool-originpill {
+    white-space: nowrap;
+}
+
+body.path-local-nextpool .local-nextpool-statuspill .icon,
+body.path-local-nextpool .local-nextpool-originpill .icon,
+body.path-local-nextpool .local-nextpool-categorypill .icon {
+    margin: 0;
+    font-size: inherit;
+    width: auto;
+    height: auto;
+}
+
+body.path-local-nextpool a.local-nextpool-originpill {
+    text-decoration: none;
+}
+
+body.path-local-nextpool a.local-nextpool-originpill:hover,
+body.path-local-nextpool a.local-nextpool-originpill:focus-visible {
+    text-decoration: underline;
+}
+
+/* Without hover the tooltip cannot be reached: the short type name stands beside the icon. */
+@media (hover: none), (max-width: 767.98px) {
+    body.path-local-nextpool .local-nextpool-typelabel {
+        display: inline;
+    }
+}
+
+/* Item list below 768 px: rows stacked, the column name before each value (WCAG 1.4.10, pipeline #66719). */
+@media (max-width: 767.98px) {
+    body.path-local-nextpool #region-main .generaltable .local-nextpool-actionscell {
+        white-space: normal;
+    }
+
+    body.path-local-nextpool #region-main .local-nextpool-table--stack,
+    body.path-local-nextpool #region-main .local-nextpool-table--stack tbody,
+    body.path-local-nextpool #region-main .local-nextpool-table--stack tbody tr,
+    body.path-local-nextpool #region-main .local-nextpool-table--stack td,
+    body.path-local-nextpool #region-main .local-nextpool-table--stack tbody th {
+        display: block;
+        width: 100%;
+    }
+
+    body.path-local-nextpool #region-main .local-nextpool-table--stack thead {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+    }
+
+    body.path-local-nextpool #region-main .local-nextpool-table--stack tr {
+        border-bottom: 1px solid var(--lh-border, #dbe7ee);
+        padding: var(--lh-spacing-sm, 8px) 0;
+    }
+
+    body.path-local-nextpool #region-main .local-nextpool-table--stack td,
+    body.path-local-nextpool #region-main .local-nextpool-table--stack tbody th {
+        border: 0;
+        padding: 2px 0;
+        overflow-wrap: anywhere;
+    }
+
+    body.path-local-nextpool #region-main .local-nextpool-table--stack td:not(:first-child)::before {
+        content: attr(data-label) ": ";
+        font-weight: bold;
+    }
+
+    body.path-local-nextpool #region-main .generaltable.local-nextpool-table--stack .local-nextpool-actionscell {
+        width: 100%;
+        white-space: normal;
+    }
+}
+
+/* Sort menu of the item list below 768 px: the check of the current choice in a fixed slot (task168). */
+.local-nextpool-sortmenu__check {
+    display: inline-block;
+    width: 1.5em;
+    flex-shrink: 0;
+}
+
+.local-nextpool-sortmenu .dropdown-menu {
+    max-width: calc(100vw - 2rem);
+}
+
+.local-nextpool-sortmenu .dropdown-item {
+    white-space: normal;
+}
+
+/* Statistics of an item below 768 px: the version heading as the first line of each stacked row (F15, task127). */
+@media (max-width: 767.98px) {
+    body.path-local-nextpool #region-main .local-nextpool-stats__table tbody th {
+        display: block;
+        width: 100%;
+        border: 0;
+        padding: 2px 0;
+    }
+
+    body.path-local-nextpool #region-main .local-nextpool-stats__table td.local-nextpool-stats__message::before {
+        content: none;
+    }
+}
+
+/* F16: a single catalogue dialog, sized for both feedback and content previews. */
+.local-nextpool-itemdialog--wide {
+    max-width: min(96vw, 1400px);
+}
+
+.local-nextpool-preview-frame {
+    display: block;
+    min-height: 65vh;
+}
+
+.local-nextpool-preview video,
+.local-nextpool-preview img {
+    max-height: 75vh;
+    object-fit: contain;
+}
+
+@media (max-width: 767.98px) {
+    .local-nextpool-itemdialog--wide {
+        max-width: 100%;
+    }
+}
+
+/* Keep keyboard focus visible on Core tabs inside the plugin shell. */
+body.path-local-nextpool .nav-tabs .nav-link:focus,
+body.path-local-nextpool .nav-tabs .nav-link:focus-visible {
+    outline: 2px solid var(--lh-primary, var(--bs-primary, var(--primary)));
+    outline-offset: 2px;
+}

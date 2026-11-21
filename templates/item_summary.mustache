@@ -1,0 +1,29 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_nextpool/item_summary
+    Shared preview header pills.
+    Example context (json): {"typefull":"File","versionfull":"Version 1","licensefull":"All rights reserved"}
+}}
+<ul class="list-unstyled d-flex flex-wrap gap-2 mb-3" aria-label="{{#str}} itemsummary, local_nextpool {{/str}}">
+    <li><span class="badge bg-light text-dark border">{{typefull}}</span></li>
+    <li><span class="badge bg-light text-dark border">{{versionfull}}</span></li>
+    <li><span class="badge bg-light text-dark border" title="{{updatemodefull}}">{{{updatemodeicon}}} {{updatemodeshort}}</span></li>
+    <li><span class="badge bg-light text-dark border">{{#licensecopyright}}<span aria-hidden="true">© </span>{{/licensecopyright}}{{licensefull}}</span></li>
+    {{#duration}}<li><span class="badge bg-light text-dark border">{{duration}}</span></li>{{/duration}}
+    {{#placed}}<li><span class="badge bg-success">{{placedtext}}</span></li>{{/placed}}
+</ul>

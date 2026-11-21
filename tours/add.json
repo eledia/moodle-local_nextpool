@@ -1,0 +1,38 @@
+{
+  "name": "tour_add_name,local_nextpool",
+  "description": "tour_add_description,local_nextpool",
+  "pathmatch": "/mod/nextpool/add.php%",
+  "enabled": 1,
+  "displaystepnumbers": true,
+  "endtourlabel": "",
+  "configdata": "{\"placement\":\"bottom\",\"orphan\":false,\"backdrop\":true,\"reflex\":false,\"filtervalues\":{\"nextpool_audience\":[\"teacher\"],\"cssselector\":[\"[data-tour=\\\"addsource\\\"]\"]}}",
+  "steps": [
+    {
+      "title": "tour_add_1_title,local_nextpool",
+      "content": "tour_add_1_content,local_nextpool",
+      "contentformat": 1,
+      "targettype": 0,
+      "targetvalue": "[data-tour=\"addsource\"]",
+      "sortorder": 0,
+      "configdata": "{}"
+    },
+    {
+      "title": "tour_add_2_title,local_nextpool",
+      "content": "tour_add_2_content,local_nextpool",
+      "contentformat": 1,
+      "targettype": 0,
+      "targetvalue": "[data-tour=\"addcatalogue\"]",
+      "sortorder": 1,
+      "configdata": "{}"
+    },
+    {
+      "title": "tour_add_3_title,local_nextpool",
+      "content": "tour_add_3_content,local_nextpool",
+      "contentformat": 1,
+      "targettype": 0,
+      "targetvalue": "[data-tour=\"addupload\"]",
+      "sortorder": 2,
+      "configdata": "{}"
+    }
+  ]
+}

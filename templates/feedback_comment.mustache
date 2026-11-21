@@ -1,0 +1,95 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_nextpool/feedback_comment
+
+    One comment with its replies and the reply form (F08, task81). Used inside local_nextpool/feedback_content,
+    which provides actionurl, sesskey, itemid and courseid.
+
+    Context variables required for this template:
+    * id - int
+    * anchor - string, element id for links from notifications
+    * headingid - string
+    * h4 - bool, heading level 4 (top-level) or 5 (reply)
+    * deleted - bool, removed comment with replies (placeholder, q70)
+    * author - string HTML, name, linked to the profile where allowed
+    * date - string, short date
+    * datefull - string, full date and time (tooltip)
+    * dateiso - string
+    * edited - bool
+    * editedfull - string
+    * hasversion - bool
+    * version - string, e.g. "Version 2"
+    * content - string HTML, formatted text
+    * actions - string HTML, icon actions
+    * canreply - bool
+    * hasreplies - bool
+    * replies - array of comments
+    * replyheadingid - string
+
+    Example context (json):
+    {
+        "id": 3, "anchor": "local-nextpool-comment-3", "headingid": "h3", "h4": true, "deleted": false,
+        "author": "<a href=\"#\">Terry Teacher</a>", "date": "14/11/26", "datefull": "Saturday, 14 November 2026, 10:12 AM",
+        "dateiso": "2026-11-14T10:12:00+01:00", "edited": false, "hasversion": true, "version": "Version 1",
+        "content": "<p>Please add the emergency numbers.</p>", "actions": "", "canreply": true, "hasreplies": false,
+        "replies": [], "replyheadingid": "r3", "actionurl": "#", "sesskey": "x", "itemid": 1, "courseid": 0
+    }
+}}
+<article id="{{anchor}}" class="local-nextpool-comment" aria-labelledby="{{headingid}}" tabindex="-1">
+    <div class="d-flex flex-wrap align-items-start gap-2">
+        {{#h4}}<h4 class="h6 mb-1 flex-grow-1 d-flex flex-wrap align-items-center gap-2" id="{{headingid}}">{{/h4}}
+        {{^h4}}<h5 class="h6 mb-1 flex-grow-1 d-flex flex-wrap align-items-center gap-2" id="{{headingid}}">{{/h4}}
+            {{#deleted}}<span class="text-muted fst-italic">{{#str}} commentremoved, local_nextpool {{/str}}</span>{{/deleted}}
+            {{^deleted}}
+                <span>{{{author}}}</span>
+                <span class="small text-muted fw-normal"><time datetime="{{dateiso}}" title="{{datefull}}">{{date}}</time></span>
+                {{#edited}}<span class="small text-muted fw-normal" title="{{editedfull}}">{{#str}} commentedited, local_nextpool {{/str}}</span>{{/edited}}
+            {{/deleted}}
+            {{#hasversion}}<span class="badge bg-light text-dark border fw-normal">{{version}}</span>{{/hasversion}}
+        {{#h4}}</h4>{{/h4}}
+        {{^h4}}</h5>{{/h4}}
+        {{{actions}}}
+    </div>
+    {{^deleted}}
+        <div class="local-nextpool-comment__text">{{{content}}}</div>
+    {{/deleted}}
+</article>
+{{#hasreplies}}
+    <ol class="list-unstyled local-nextpool-feedback__replies mt-2" aria-label="{{#str}} commentreplies, local_nextpool {{/str}}">
+        {{#replies}}
+            <li class="mb-2">
+                {{> local_nextpool/feedback_comment }}
+            </li>
+        {{/replies}}
+    </ol>
+{{/hasreplies}}
+{{#canreply}}
+    <details class="local-nextpool-feedback__reply mt-1">
+        <summary class="small">{{#str}} commentreply, local_nextpool {{/str}}</summary>
+        <form method="post" action="{{actionurl}}" class="mt-2" data-local-nextpool-action="reply">
+            <input type="hidden" name="sesskey" value="{{sesskey}}">
+            <input type="hidden" name="itemid" value="{{itemid}}">
+            <input type="hidden" name="courseid" value="{{courseid}}">
+            <input type="hidden" name="action" value="add">
+            <input type="hidden" name="parentid" value="{{id}}">
+            <label for="local-nextpool-reply-text-{{id}}" class="visually-hidden">{{#str}} commentreplyto, local_nextpool {{/str}}</label>
+            <textarea id="local-nextpool-reply-text-{{id}}" name="content" class="form-control mb-2" rows="2" required></textarea>
+            <button type="submit" class="btn btn-secondary btn-sm">{{#str}} commentpostreply, local_nextpool {{/str}}</button>
+        </form>
+    </details>
+{{/canreply}}

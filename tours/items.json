@@ -1,0 +1,38 @@
+{
+  "name": "tour_items_name,local_nextpool",
+  "description": "tour_items_description,local_nextpool",
+  "pathmatch": "/local/nextpool/items.php%",
+  "enabled": 1,
+  "displaystepnumbers": true,
+  "endtourlabel": "",
+  "configdata": "{\"placement\":\"bottom\",\"orphan\":false,\"backdrop\":true,\"reflex\":false,\"filtervalues\":{\"nextpool_audience\":[\"editorial\"],\"cssselector\":[\"[data-tour=\\\"editorialfilters\\\"]\"]}}",
+  "steps": [
+    {
+      "title": "tour_items_1_title,local_nextpool",
+      "content": "tour_items_1_content,local_nextpool",
+      "contentformat": 1,
+      "targettype": 0,
+      "targetvalue": "[data-tour=\"editorialfilters\"]",
+      "sortorder": 0,
+      "configdata": "{}"
+    },
+    {
+      "title": "tour_items_2_title,local_nextpool",
+      "content": "tour_items_2_content,local_nextpool",
+      "contentformat": 1,
+      "targettype": 0,
+      "targetvalue": "[data-tour=\"editorialtable\"]",
+      "sortorder": 1,
+      "configdata": "{}"
+    },
+    {
+      "title": "tour_items_3_title,local_nextpool",
+      "content": "tour_items_3_content,local_nextpool",
+      "contentformat": 1,
+      "targettype": 0,
+      "targetvalue": "[data-tour=\"editorialactions\"]",
+      "sortorder": 2,
+      "configdata": "{}"
+    }
+  ]
+}

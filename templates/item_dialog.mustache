@@ -1,0 +1,59 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_nextpool/item_dialog
+
+    Body of the item dialog in the catalogue browser (task173): one panel per area. The module
+    local_nextpool/item_dialog renders it and fills each panel from the fragment of its area. Tabs appear only when
+    the dialog has more than one area (planned: "Preview", task176). The shared header (the item title as modal title,
+    later pills and "Place") belongs to the dialog and goes above the tabs, not into an area.
+
+    Context variables required for this template:
+    * hastabs - bool, more than one area
+    * areas - array of {key, label, active}
+
+    Example context (json):
+    {
+        "hastabs": false,
+        "areas": [{"key": "feedback", "label": "Feedback", "active": true}]
+    }
+}}
+<div class="local-nextpool-itemdialog" data-region="local-nextpool-itemdialog">
+    <div data-region="local-nextpool-itemdialog-header" aria-busy="true">{{> core/loading }}</div>
+    {{#hastabs}}
+    <ul class="nav nav-tabs mb-3" role="tablist">
+        {{#areas}}
+        <li class="nav-item" role="presentation">
+            <button type="button" class="nav-link{{#active}} active{{/active}}" role="tab" data-bs-toggle="tab"
+                id="local-nextpool-itemdialog-tab-{{key}}" data-bs-target="#local-nextpool-itemdialog-area-{{key}}"
+                aria-controls="local-nextpool-itemdialog-area-{{key}}" aria-selected="{{#active}}true{{/active}}{{^active}}false{{/active}}">{{label}}</button>
+        </li>
+        {{/areas}}
+    </ul>
+    <div class="tab-content">
+    {{/hastabs}}
+    {{#areas}}
+    <div class="local-nextpool-itemdialog__area{{#hastabs}} tab-pane{{#active}} active{{/active}}{{/hastabs}}"
+        id="local-nextpool-itemdialog-area-{{key}}" data-region="local-nextpool-itemdialog-area" data-area="{{key}}"
+        {{#hastabs}}role="tabpanel" aria-labelledby="local-nextpool-itemdialog-tab-{{key}}"{{/hastabs}} aria-busy="true">
+        {{> core/loading }}
+    </div>
+    {{/areas}}
+    {{#hastabs}}
+    </div>
+    {{/hastabs}}
+</div>

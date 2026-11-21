@@ -1,0 +1,66 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_nextpool/item_facts
+
+    Facts of a catalogue item in the card of its latest version (task165): the update mode and "All rights
+    reserved" (task169) as icons only, the other facts as read-only pills, and the technical details on request.
+
+    An icon carries no meaning alone: its name is visually hidden text, the sentence is its tooltip, and it is
+    focusable, so the tooltip also opens from the keyboard. Each pill shows a short text; label and full text
+    are visually hidden and its tooltip.
+
+    Context variables required for this template:
+    * iconfacts - array of {icon (HTML), label, description}: the update mode and, without a licence,
+      "All rights reserved" (task169)
+    * facts - array of {icon (HTML, '' without), short, full}
+    * technical - array of {label, value (HTML)}
+
+    Example context (json):
+    {
+        "iconfacts": [
+            {
+                "icon": "",
+                "label": "Updates in courses: Direct",
+                "description": "Updates in courses: In place (learner progress is kept)"
+            },
+            {"icon": "", "label": "Licence: All rights reserved", "description": "Licence: All rights reserved"}
+        ],
+        "facts": [
+            {"icon": "", "short": "Library", "full": "Storage location: Library"},
+            {"icon": "", "short": "CC BY 4.0", "full": "Licence: Creative Commons - 4.0 International"}
+        ],
+        "technical": [{"label": "Identifier", "value": "0f8c4b1e"}]
+    }
+}}
+<ul class="local-nextpool-itemfacts list-unstyled d-flex flex-wrap align-items-center gap-2 mt-2 mb-1 small" aria-label="{{#str}} itemdetails, local_nextpool {{/str}}">
+    {{#iconfacts}}
+        <li><span class="local-nextpool-factsicon d-inline-flex align-items-center justify-content-center" tabindex="0" data-bs-toggle="tooltip" title="{{description}}">{{{icon}}}<span class="visually-hidden">{{label}}</span></span></li>
+    {{/iconfacts}}
+    {{#facts}}
+        <li class="local-nextpool-chip d-inline-flex align-items-center gap-1 text-break" title="{{full}}">{{{icon}}}<span aria-hidden="true">{{short}}</span><span class="visually-hidden">{{full}}</span></li>
+    {{/facts}}
+</ul>
+<details class="local-nextpool-technical small mb-1">
+    <summary>{{#str}} technicaldetails, local_nextpool {{/str}}</summary>
+    <dl class="mb-0 mt-2">
+        {{#technical}}
+            <dt class="text-muted fw-normal">{{label}}</dt>
+            <dd class="mb-2 text-break">{{{value}}}</dd>
+        {{/technical}}
+    </dl>
+</details>

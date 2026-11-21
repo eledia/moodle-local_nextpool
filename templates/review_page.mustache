@@ -1,0 +1,163 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_nextpool/review_page
+
+    Review of a version in review (F07, task80): heading with status, the outdated-base hint, facts,
+    change log, metadata comparison, history and the decision form.
+
+    Values passed as HTML (triple braces) are produced by the renderable through
+    format_string(), format_text(), s(), html_writer or moodleform.
+
+    Context variables required for this template:
+    * heading - string, e.g. "Review version 4"
+    * status - string, version status name
+    * statusclass - string, badge classes
+    * statusicon - string HTML, decorative status icon (task166)
+    * selfapproved - bool
+    * outdated - string HTML, hint "Based on version N, current is version M" with compare link, '' if none
+    * facts - array of {label, value (HTML)}, only facts that are set
+    * changelog - string HTML, '' if none
+    * comparison - null or {fromname, toname, contentchanged, rows (array of {field, from (HTML), to (HTML), changed})}
+    * hashistory - bool
+    * history - array of {text (HTML), reason (HTML), selfapproved}
+    * hasform - bool
+    * form - string HTML, the decision form
+    * hascomments - bool
+    * comments - array of {author, text (HTML), done}, comments the version takes up
+    * hasactions - bool
+    * actions - string HTML, buttons of the person who proposed the version (change, cancel)
+
+    Example context (json):
+    {
+        "heading": "Review proposal by Anna Example on 14/11/26",
+        "status": "In review",
+        "statusclass": "bg-warning text-dark",
+        "statusicon": "",
+        "selfapproved": false,
+        "outdated": "Based on version 3, current is version 4. <a href=\"#\">Compare with version 4</a>",
+        "facts": [{"label": "Item", "value": "<a href=\"#\">Fire safety</a>"}, {"label": "Kind", "value": "Proposal from a course"}],
+        "changelog": "<p>Emergency numbers added.</p>",
+        "comparison": {"fromname": "Version 3", "toname": "Proposal", "contentchanged": true,
+            "rows": [{"field": "File name", "from": "a.pdf", "to": "b.pdf", "changed": true}]},
+        "hashistory": true,
+        "history": [{"text": "Submitted by Anna Example on 14/11/26, 10:12", "reason": "", "selfapproved": false}],
+        "hasform": true,
+        "form": "<form></form>",
+        "hascomments": true,
+        "comments": [{"author": "Terry Teacher", "text": "<p>Please add the emergency numbers.</p>", "done": false}],
+        "hasactions": false,
+        "actions": ""
+    }
+}}
+<div class="local-nextpool-review">
+    <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+        <h2 class="h3 mb-0">{{heading}}</h2>
+        <span class="badge rounded-pill text-wrap text-start local-nextpool-statuspill {{statusclass}}"><span class="visually-hidden">{{#str}} status {{/str}}: </span>{{{statusicon}}}{{status}}</span>
+        {{#selfapproved}}<span class="badge bg-light text-dark border">{{#str}} selfapproved, local_nextpool {{/str}}</span>{{/selfapproved}}
+    </div>
+    {{#outdated}}
+        <div class="alert alert-warning" role="status">{{{outdated}}}</div>
+    {{/outdated}}
+    <div class="row">
+        <div class="col-lg-8">
+            {{#changelog}}
+                <section class="mb-4" aria-labelledby="local-nextpool-review-changelog">
+                    <h3 class="h5" id="local-nextpool-review-changelog">{{#str}} changelog, local_nextpool {{/str}}</h3>
+                    {{{changelog}}}
+                </section>
+            {{/changelog}}
+            {{#comparison}}
+                <section class="mb-4" aria-labelledby="local-nextpool-review-comparison">
+                    <h3 class="h5" id="local-nextpool-review-comparison">{{#str}} reviewcomparison, local_nextpool {{/str}}</h3>
+                    <p>{{#contentchanged}}{{#str}} comparecontentchanged, local_nextpool {{/str}}{{/contentchanged}}{{^contentchanged}}{{#str}} comparecontentsame, local_nextpool {{/str}}{{/contentchanged}}</p>
+                    <div class="table-responsive">
+                        <table class="generaltable">
+                            <thead>
+                                <tr>
+                                    <th scope="col">{{#str}} comparefield, local_nextpool {{/str}}</th>
+                                    <th scope="col">{{fromname}}</th>
+                                    <th scope="col">{{toname}}</th>
+                                    <th scope="col">{{#str}} comparechanged, local_nextpool {{/str}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#rows}}
+                                    <tr>
+                                        <th scope="row">{{field}}</th>
+                                        <td class="text-break">{{{from}}}</td>
+                                        <td class="text-break">{{{to}}}</td>
+                                        <td>{{#changed}}<strong>{{#str}} yes {{/str}}</strong>{{/changed}}{{^changed}}{{#str}} no {{/str}}{{/changed}}</td>
+                                    </tr>
+                                {{/rows}}
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            {{/comparison}}
+            {{#hascomments}}
+                <section class="mb-4" aria-labelledby="local-nextpool-review-comments">
+                    <h3 class="h5" id="local-nextpool-review-comments">{{#str}} reviewcomments, local_nextpool {{/str}}</h3>
+                    <ul class="list-unstyled mb-0">
+                        {{#comments}}
+                            <li class="mb-2">
+                                <span class="fw-semibold">{{author}}</span>
+                                {{#done}}<span class="badge bg-success">{{#str}} commentdone, local_nextpool {{/str}}</span>{{/done}}
+                                <div>{{{text}}}</div>
+                            </li>
+                        {{/comments}}
+                    </ul>
+                </section>
+            {{/hascomments}}
+            {{#hasactions}}
+                <div class="d-flex flex-wrap gap-2 mb-4">{{{actions}}}</div>
+            {{/hasactions}}
+            {{#hasform}}
+                <section class="mb-4" aria-labelledby="local-nextpool-review-decision">
+                    <h3 class="h5" id="local-nextpool-review-decision">{{#str}} reviewdecision, local_nextpool {{/str}}</h3>
+                    <p class="small text-muted">{{#str}} reviewaccessibility, local_nextpool {{/str}}</p>
+                    {{{form}}}
+                </section>
+            {{/hasform}}
+        </div>
+        <div class="col-lg-4">
+            <section class="local-nextpool-panel p-3 mb-3" aria-labelledby="local-nextpool-review-facts">
+                <h3 class="h5" id="local-nextpool-review-facts">{{#str}} itemdetails, local_nextpool {{/str}}</h3>
+                <dl class="mb-0">
+                    {{#facts}}
+                        <dt class="small text-muted fw-normal">{{label}}</dt>
+                        <dd class="mb-2">{{{value}}}</dd>
+                    {{/facts}}
+                </dl>
+            </section>
+            <section class="local-nextpool-panel p-3 mb-3" aria-labelledby="local-nextpool-review-history">
+                <h3 class="h5" id="local-nextpool-review-history">{{#str}} reviewhistory, local_nextpool {{/str}}</h3>
+                {{^hashistory}}<p class="text-muted mb-0">{{#str}} reviewnohistory, local_nextpool {{/str}}</p>{{/hashistory}}
+                {{#hashistory}}
+                <ol class="list-unstyled mb-0">
+                    {{#history}}
+                        <li class="mb-2">
+                            {{{text}}}{{#selfapproved}} <span class="badge bg-light text-dark border">{{#str}} selfapproved, local_nextpool {{/str}}</span>{{/selfapproved}}
+                            {{#reason}}<div class="small">{{{reason}}}</div>{{/reason}}
+                        </li>
+                    {{/history}}
+                </ol>
+                {{/hashistory}}
+            </section>
+        </div>
+    </div>
+</div>

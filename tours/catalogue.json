@@ -1,0 +1,47 @@
+{
+  "name": "tour_catalogue_name,local_nextpool",
+  "description": "tour_catalogue_description,local_nextpool",
+  "pathmatch": "/local/nextpool/catalogue.php%",
+  "enabled": 1,
+  "displaystepnumbers": true,
+  "endtourlabel": "",
+  "configdata": "{\"placement\":\"bottom\",\"orphan\":false,\"backdrop\":true,\"reflex\":false,\"filtervalues\":{\"nextpool_audience\":[\"teacher\"],\"cssselector\":[\"[data-tour=\\\"cataloguefilters\\\"]\"]}}",
+  "steps": [
+    {
+      "title": "tour_catalogue_1_title,local_nextpool",
+      "content": "tour_catalogue_1_content,local_nextpool",
+      "contentformat": 1,
+      "targettype": 0,
+      "targetvalue": "[data-tour=\"cataloguefilters\"]",
+      "sortorder": 0,
+      "configdata": "{}"
+    },
+    {
+      "title": "tour_catalogue_2_title,local_nextpool",
+      "content": "tour_catalogue_2_content,local_nextpool",
+      "contentformat": 1,
+      "targettype": 0,
+      "targetvalue": "[data-tour=\"cataloguecard\"]",
+      "sortorder": 1,
+      "configdata": "{}"
+    },
+    {
+      "title": "tour_catalogue_3_title,local_nextpool",
+      "content": "tour_catalogue_3_content,local_nextpool",
+      "contentformat": 1,
+      "targettype": 0,
+      "targetvalue": "[data-tour=\"cataloguepreview\"]",
+      "sortorder": 2,
+      "configdata": "{}"
+    },
+    {
+      "title": "tour_catalogue_4_title,local_nextpool",
+      "content": "tour_catalogue_4_content,local_nextpool",
+      "contentformat": 1,
+      "targettype": 0,
+      "targetvalue": "[data-tour=\"catalogueactions\"]",
+      "sortorder": 3,
+      "configdata": "{}"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="category">
+    <category><text>$module$/top/Catalogue quiz</text></category>
+  </question>
+  <question type="truefalse">
+    <name><text>Earth is round</text></name>
+    <questiontext format="html"><text><![CDATA[<p>The earth is round.</p>]]></text></questiontext>
+    <generalfeedback format="html"><text></text></generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>1</penalty>
+    <hidden>0</hidden>
+    <idnumber>tf1</idnumber>
+    <answer fraction="100" format="moodle_auto_format"><text>true</text><feedback format="html"><text></text></feedback></answer>
+    <answer fraction="0" format="moodle_auto_format"><text>false</text><feedback format="html"><text></text></feedback></answer>
+  </question>
+  <question type="shortanswer">
+    <name><text>Capital of France</text></name>
+    <questiontext format="html"><text><![CDATA[<p>What is the capital of France?</p>]]></text></questiontext>
+    <generalfeedback format="html"><text></text></generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber>sa1</idnumber>
+    <usecase>0</usecase>
+    <answer fraction="100" format="moodle_auto_format"><text>Paris</text><feedback format="html"><text></text></feedback></answer>
+  </question>
+  <question type="multichoice">
+    <name><text>Primary colours</text></name>
+    <questiontext format="html"><text><![CDATA[<p>Which one is a primary colour?</p>]]></text></questiontext>
+    <generalfeedback format="html"><text></text></generalfeedback>
+    <defaultgrade>2</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber>mc1</idnumber>
+    <single>true</single>
+    <shuffleanswers>true</shuffleanswers>
+    <answernumbering>abc</answernumbering>
+    <showstandardinstruction>0</showstandardinstruction>
+    <correctfeedback format="html"><text></text></correctfeedback>
+    <partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback>
+    <incorrectfeedback format="html"><text></text></incorrectfeedback>
+    <answer fraction="100" format="html"><text>Red</text><feedback format="html"><text></text></feedback></answer>
+    <answer fraction="0" format="html"><text>Green</text><feedback format="html"><text></text></feedback></answer>
+  </question>
+</quiz>

@@ -1,0 +1,118 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_nextpool/catalogue_page
+
+    Catalogue items available in a course, as cards with a place action.
+
+    Context variables required for this template:
+    * hasitems - bool
+    * filtered - bool, whether a filter is set (empty state)
+    * reseturl - catalogue without filter
+    * items - array of {id, title (formatted HTML), hasdescription, description, type, typefull, inplace, version, versionfull,
+               updatemodeicon (HTML), updatemodeshort, updatemodefull, license, licensefull, hasauthors, author, authorsmore,
+               authorsfull, facts, tags, placed, placedtext, canplace, placeaction (HTML), notplaceable,
+               feedbackaction (HTML, icon link with the badge of open comments that opens the item dialog, task81, task173)}
+
+    Example context (json):
+    {
+        "hasitems": true,
+        "items": [{
+            "id": 1,
+            "title": "Fire safety basics",
+            "hasdescription": true,
+            "description": "What to do when the alarm goes off.",
+            "type": "File",
+            "typefull": "File (video, PDF, document)",
+            "inplace": true,
+            "version": "V2",
+            "versionfull": "Version 2",
+            "updatemodeicon": "",
+            "updatemodeshort": "Direct",
+            "updatemodefull": "Updates in courses: In place",
+            "license": "CC BY 4.0",
+            "licensefull": "Creative Commons - 4.0 International",
+            "hasauthors": true,
+            "author": "Jane Doe +1",
+            "authorsmore": true,
+            "authorsfull": "Jane Doe, Sam Chen",
+            "facts": "Safety / Fire · 15 mins",
+            "tags": "Safety, Onboarding",
+            "placed": true,
+            "placedtext": "In this course: 1",
+            "canplace": true,
+            "notplaceable": false,
+            "placeaction": "<a href=\"#\" class=\"btn btn-icon\">+</a>",
+            "feedbackaction": "<a href=\"#\" class=\"btn btn-icon\">Feedback on Fire safety basics, 2 open</a>"
+        }]
+    }
+}}
+{{^hasitems}}
+    {{#filtered}}
+    <p>{{#str}} catalogueempty, local_nextpool {{/str}}</p>
+    {{#reseturl}}<p><a href="{{reseturl}}">{{#str}} resetfilter, local_nextpool {{/str}}</a></p>{{/reseturl}}
+    {{/filtered}}
+    {{^filtered}}
+    <p>{{#str}} catalogueemptyall, local_nextpool {{/str}}</p>
+    {{/filtered}}
+{{/hasitems}}
+{{#hasitems}}
+<ul class="list-unstyled row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3 local-nextpool-catalogue">
+    {{#items}}
+    <li class="col">
+        <article data-tour="cataloguecard" class="card h-100" aria-labelledby="local-nextpool-item-{{id}}">
+            <div class="card-body d-flex flex-column gap-2">
+                <div class="d-flex align-items-start justify-content-between gap-2">
+                    <h3 class="h5 card-title mb-0"{{#contentlanguage}} lang="{{contentlanguage}}"{{/contentlanguage}} id="local-nextpool-item-{{id}}"><a href="{{previewurl}}" data-local-nextpool-itemdialog="preview" data-tour="cataloguepreview"
+                        data-itemid="{{id}}" data-courseid="{{courseid}}" data-contextid="{{contextid}}"
+                        data-section="{{section}}" data-title="{{plain_title}}">{{{title}}}</a></h3>
+                    <div data-tour="catalogueactions" class="flex-shrink-0 d-flex">{{{feedbackaction}}}{{#canplace}}{{{placeaction}}}{{/canplace}}</div>
+                </div>
+                <ul class="list-unstyled d-flex flex-wrap gap-1 mb-0" aria-label="{{#str}} itemsummary, local_nextpool {{/str}}">
+                    <li><span class="badge bg-light text-dark border" title="{{typefull}}"><span aria-hidden="true">{{type}}</span><span class="visually-hidden">{{typefull}}</span></span></li>
+                    <li><span class="badge bg-light text-dark border" title="{{versionfull}}"><span aria-hidden="true">{{version}}</span><span class="visually-hidden">{{versionfull}}</span></span></li>
+                    <li><span class="badge bg-light text-dark border" title="{{updatemodefull}}">{{{updatemodeicon}}}<span aria-hidden="true">{{updatemodeshort}}</span><span class="visually-hidden">{{updatemodefull}}</span></span></li>
+                    {{#license}}
+                    <li><span class="badge bg-light text-dark border" title="{{licensefull}}"><span class="visually-hidden">{{#str}} license {{/str}}: </span>{{#licensecopyright}}<span aria-hidden="true">© </span>{{/licensecopyright}}{{license}}</span></li>
+                    {{/license}}
+                    {{#placed}}<li><span class="badge bg-success">{{placedtext}}</span></li>{{/placed}}
+                </ul>
+                {{#hasauthors}}
+                <p class="mb-0">
+                    <span class="local-nextpool-chip d-inline-flex align-items-center small"{{#authorsmore}} title="{{authorsfull}}"{{/authorsmore}}>
+                        <span class="visually-hidden">{{#str}} authors, local_nextpool {{/str}}: {{#authorsmore}}{{authorsfull}}{{/authorsmore}}{{^authorsmore}}{{author}}{{/authorsmore}}</span>
+                        <span aria-hidden="true">{{author}}</span>
+                    </span>
+                </p>
+                {{/hasauthors}}
+                {{#hasdescription}}<p class="card-text small mb-0"{{#contentlanguage}} lang="{{contentlanguage}}"{{/contentlanguage}}>{{description}}</p>{{/hasdescription}}
+                {{#facts}}<p class="small text-muted mb-0">{{facts}}</p>{{/facts}}
+                {{#tags}}<p class="small text-muted mb-0"><span class="visually-hidden">{{#str}} tags {{/str}}: </span>{{{tags}}}</p>{{/tags}}
+                {{#notplaceable}}
+                    <p class="text-muted small mb-0 mt-auto">{{#str}} notplaceableyet, local_nextpool {{/str}}</p>
+                {{/notplaceable}}
+            </div>
+        </article>
+    </li>
+    {{/items}}
+</ul>
+{{#js}}
+    require(['local_nextpool/item_dialog'], function(itemDialog) {
+        itemDialog.init('.local-nextpool-catalogue');
+    });
+{{/js}}
+{{/hasitems}}

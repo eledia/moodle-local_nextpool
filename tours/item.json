@@ -1,0 +1,47 @@
+{
+  "name": "tour_item_name,local_nextpool",
+  "description": "tour_item_description,local_nextpool",
+  "pathmatch": "/local/nextpool/item.php%",
+  "enabled": 1,
+  "displaystepnumbers": true,
+  "endtourlabel": "",
+  "configdata": "{\"placement\":\"bottom\",\"orphan\":false,\"backdrop\":true,\"reflex\":false,\"filtervalues\":{\"nextpool_audience\":[\"editorial\"],\"cssselector\":[\"[data-tour=\\\"itemoverview\\\"]\"]}}",
+  "steps": [
+    {
+      "title": "tour_item_1_title,local_nextpool",
+      "content": "tour_item_1_content,local_nextpool",
+      "contentformat": 1,
+      "targettype": 0,
+      "targetvalue": "[data-tour=\"itemoverview\"]",
+      "sortorder": 0,
+      "configdata": "{}"
+    },
+    {
+      "title": "tour_item_2_title,local_nextpool",
+      "content": "tour_item_2_content,local_nextpool",
+      "contentformat": 1,
+      "targettype": 0,
+      "targetvalue": "[data-tour=\"itemsummary\"]",
+      "sortorder": 1,
+      "configdata": "{}"
+    },
+    {
+      "title": "tour_item_3_title,local_nextpool",
+      "content": "tour_item_3_content,local_nextpool",
+      "contentformat": 1,
+      "targettype": 0,
+      "targetvalue": "[data-tour=\"itemversions\"]",
+      "sortorder": 2,
+      "configdata": "{}"
+    },
+    {
+      "title": "tour_item_4_title,local_nextpool",
+      "content": "tour_item_4_content,local_nextpool",
+      "contentformat": 1,
+      "targettype": 0,
+      "targetvalue": "[data-tour=\"itemactions\"]",
+      "sortorder": 3,
+      "configdata": "{}"
+    }
+  ]
+}

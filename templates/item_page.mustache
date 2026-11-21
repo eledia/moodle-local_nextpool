@@ -1,0 +1,310 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_nextpool/item_page
+
+    Editorial view of a catalogue item: header with type, title, status and key facts, then the
+    description and versions beside the further details, authors and competencies. The item facts (update mode,
+    storage location, availability, licence, last change) and the technical details sit in the card of the
+    latest version, or under the heading "Versions" while there is none (task165).
+
+    Values passed as HTML (triple braces) are produced by the renderable through
+    format_string(), format_text(), s() or core renderers.
+
+    Context variables required for this template:
+    * title - string HTML, item title
+    * typename - string, content type
+    * typeicon - string HTML, decorative activity icon
+    * status - string, item status name
+    * statusclass - string, badge classes
+    * statusicon - string HTML, decorative status icon as in status::badge() (task166)
+    * statusnotice - string, notice when a version is published but the item is not (task104), '' without
+    * statusnoticeaction - string HTML, icon button with the item step for the notice, '' without
+    * chips - array of {icon (HTML), label, value (HTML)}, read-only key facts the item has
+    * hasdescription - bool
+    * description - string HTML
+    * latestversionnotice - review-state message and optional rejection reason for the newest numbered version
+    * actions - string HTML, "Import new version" and at most one labelled button for the next step
+    * iconactions - string HTML, icon actions and the "More actions" menu
+    * iconfacts - array of {icon (HTML), label, description}, icon-only facts, see local_nextpool/item_facts
+    * facts - array of {icon (HTML), short, full}, read-only pills, see local_nextpool/item_facts
+    * technical - array of {label, value (HTML)}, shown on request
+    * factsinversion - bool, the facts sit in the card of the latest version (versions.showfacts)
+    * hasmetadata - bool
+    * metadata - array of {label, value (HTML)}, further details, only filled fields (tags, audience, origin, custom fields)
+    * hasauthors - bool
+    * authors - array of {name (HTML), hasrole, role (HTML)}
+    * showeditors - bool, section "Item editors" shown (editors exist or the user may add them)
+    * haseditors - bool
+    * editors - array of {name (HTML), remove (HTML icon button, '' without the right)}
+    * addeditorurl - string, page to add an item editor, '' without the right
+    * hascompetencies - bool
+    * competencies - array of {name (HTML), idnumber (HTML), level, function, notice, hasobjectives, objectives}
+    * competencies.objectives - array of {id (HTML), bloom, text (HTML)}
+    * sourcemissing - string, notice that the file is no longer found in the storage location, '' if found
+    * hasversions - bool
+    * versioncount - int
+    * versions - array of {heading, label, status, statusclass, statusicon (HTML), iscurrent, fileicon, filename,
+                  filesize, sourceref,
+                  created (tooltip), createdicon, createdprefix, createdname (HTML), createddate, createdfulldate,
+                  published (tooltip), publishedicon, publishedname (HTML), publisheddate, publishedfulldate,
+                  compareurl, comparelabel, compareicon (HTML), changelog (HTML), changelogshort, changeloglong,
+                  h5plibraryhint (HTML), actions (HTML icon group), showfacts}
+
+    Example context (json):
+    {
+        "title": "Fire safety basics",
+        "typename": "File (video, PDF, document)",
+        "typeicon": "",
+        "status": "In review",
+        "statusclass": "bg-warning text-dark",
+        "statusicon": "",
+        "statusnotice": "Version 1 is published, but the item is not.",
+        "statusnoticeaction": "",
+        "chips": [{"icon": "", "label": "Current version", "value": "V1"}],
+        "hasdescription": true,
+        "description": "<p>Basics of fire safety at work.</p>",
+        "actions": "<button class=\"btn btn-primary\">Import new version</button>",
+        "iconactions": "<a class=\"btn btn-icon\" href=\"#\" aria-label=\"Edit\">E</a>",
+        "iconfacts": [
+            {
+                "icon": "",
+                "label": "Updates in courses: Direct",
+                "description": "Updates in courses: In place (learner progress is kept)"
+            },
+            {"icon": "", "label": "Licence: All rights reserved", "description": "Licence: All rights reserved"}
+        ],
+        "facts": [{"icon": "", "short": "Library", "full": "Storage location: Library"}],
+        "technical": [{"label": "Identifier", "value": "0f8c4b1e"}],
+        "factsinversion": true,
+        "hasmetadata": true,
+        "metadata": [{"label": "Audience", "value": "New staff"}],
+        "hasauthors": true,
+        "authors": [{"name": "Jane Doe", "hasrole": true, "role": "Editor"}],
+        "showeditors": true,
+        "haseditors": true,
+        "editors": [{"name": "Sam Chen", "remove": ""}],
+        "addeditorurl": "",
+        "hascompetencies": true,
+        "competencies": [{
+            "name": "Recognise fire hazards",
+            "idnumber": "SAFE-01",
+            "level": "2 – Guided application",
+            "function": "Explain",
+            "notice": "",
+            "hasobjectives": true,
+            "objectives": [{"id": "SAFE-01.1", "bloom": "Understand", "text": "Name the three sources of ignition"}]
+        }],
+        "sourcemissing": "",
+        "hasversions": true,
+        "versioncount": 1,
+        "versions": [{
+            "heading": "Version 1",
+            "label": "Initial",
+            "status": "Published",
+            "statusclass": "bg-success",
+            "statusicon": "",
+            "iscurrent": true,
+            "fileicon": "",
+            "filename": "handout.pdf",
+            "filesize": "120 KB",
+            "sourceref": "Safety/handout.pdf",
+            "created": "Created by Admin User on 2/10/26, 10:00",
+            "createdicon": "",
+            "createdprefix": "Created by",
+            "createdname": "Admin User",
+            "createddate": "02/10/26",
+            "createdfulldate": "2/10/26, 10:00",
+            "published": "published by Admin User on 2/10/26, 11:00",
+            "publishedicon": "",
+            "publishedname": "Admin User",
+            "publisheddate": "02/10/26",
+            "publishedfulldate": "2/10/26, 11:00",
+            "compareurl": "",
+            "comparelabel": "",
+            "compareicon": "",
+            "changelog": "<p>First release</p>",
+            "changelogshort": "First release",
+            "changeloglong": false,
+            "h5plibraryhint": "",
+            "actions": "<div role=\"group\" aria-label=\"Actions: Version 1\"></div>",
+            "showfacts": true
+        }]
+    }
+}}
+<div class="local-nextpool-item">
+    {{#sourcemissing}}
+        <div class="alert alert-warning" role="status">{{sourcemissing}}</div>
+    {{/sourcemissing}}
+    <div data-tour="itemoverview" class="local-nextpool-item__header d-flex flex-wrap align-items-start gap-3 p-3 mb-3">
+        <span class="local-nextpool-item__icon d-flex align-items-center justify-content-center flex-shrink-0">{{{typeicon}}}</span>
+        <div class="local-nextpool-item__headline flex-grow-1">
+            <p class="local-nextpool-item__eyebrow text-uppercase small fw-semibold mb-1">{{typename}}</p>
+            <h2 class="h3 mb-2"{{#contentlanguage}} lang="{{contentlanguage}}"{{/contentlanguage}}>{{{title}}}</h2>
+            <ul class="list-unstyled d-flex flex-wrap align-items-center gap-2 mb-0" data-tour="itemsummary" aria-label="{{#str}} itemsummary, local_nextpool {{/str}}">
+                <li><span class="badge rounded-pill text-wrap text-start local-nextpool-statuspill {{statusclass}} local-nextpool-item__status"><span class="visually-hidden">{{#str}} status {{/str}}: </span>{{{statusicon}}}{{status}}</span></li>
+                {{#chips}}
+                    <li class="local-nextpool-chip d-inline-flex align-items-center gap-1 small"><span class="visually-hidden">{{label}}: </span>{{{icon}}}{{{value}}}</li>
+                {{/chips}}
+            </ul>
+        </div>
+        <div data-tour="itemactions" class="local-nextpool-item__iconactions d-flex align-items-center flex-shrink-0">{{{iconactions}}}</div>
+        {{#actions}}
+            <div class="local-nextpool-item__actions d-flex flex-wrap gap-2 w-100">{{{actions}}}</div>
+        {{/actions}}
+    </div>
+    {{#statusnotice}}
+        <div class="alert alert-info d-flex align-items-center justify-content-between gap-2 py-2 local-nextpool-statusnotice">
+            <span>{{statusnotice}}</span>{{{statusnoticeaction}}}
+        </div>
+    {{/statusnotice}}
+
+    {{#latestversionnotice}}
+        <div class="alert {{class}} local-nextpool-versionnotice">
+            <p class="mb-0">{{message}}</p>
+            {{#reason}}<div class="mt-2">{{{reason}}}</div>{{/reason}}
+        </div>
+    {{/latestversionnotice}}
+
+    <div class="local-nextpool-item__body d-lg-flex align-items-start">
+        <div class="local-nextpool-item__main">
+            {{#hasdescription}}
+                <section class="mb-4" aria-labelledby="local-nextpool-description">
+                    <h3 class="h5" id="local-nextpool-description">{{#str}} description {{/str}}</h3>
+                    <div{{#contentlanguage}} lang="{{contentlanguage}}"{{/contentlanguage}}>{{{description}}}</div>
+                </section>
+            {{/hasdescription}}
+
+            <section data-tour="itemversions" aria-labelledby="local-nextpool-versions">
+                <h3 class="h5" id="local-nextpool-versions">{{#str}} versions, local_nextpool {{/str}}{{#hasversions}} <span class="badge bg-light text-dark border">{{versioncount}}</span>{{/hasversions}}</h3>
+                {{^hasversions}}
+                    <p class="text-muted">{{#str}} noversions, local_nextpool {{/str}}</p>
+                {{/hasversions}}
+                {{^factsinversion}}
+                    <div class="mb-3">{{> local_nextpool/item_facts }}</div>
+                {{/factsinversion}}
+                {{#versions}}
+                    <section class="card local-nextpool-version mb-2">
+                        <div class="card-body py-2 px-3">
+                            <div class="d-flex align-items-start gap-2">
+                                <h4 class="h6 card-title d-flex flex-wrap align-items-center gap-2 flex-grow-1 mb-1 mt-2">
+                                    {{heading}}{{#label}} – {{{label}}}{{/label}}
+                                    <span class="badge rounded-pill text-wrap text-start local-nextpool-statuspill {{statusclass}}">{{{statusicon}}}{{status}}</span>
+                                    {{#iscurrent}}<span class="local-nextpool-current" title="{{#str}} currentversion, local_nextpool {{/str}}">{{#pix}} i/star, core {{/pix}}<span class="visually-hidden">{{#str}} currentversion, local_nextpool {{/str}}</span></span>{{/iscurrent}}
+                                </h4>
+                                {{{actions}}}
+                            </div>
+                            <p class="local-nextpool-version__facts d-flex flex-wrap align-items-center column-gap-3 row-gap-1 mb-1 small text-break">
+                                <span title="{{sourceref}}">{{{fileicon}}}{{{filename}}} <span aria-hidden="true">·</span> {{filesize}}</span>
+                                <span title="{{created}}">{{{createdicon}}}{{#createdprefix}}<span class="visually-hidden">{{createdprefix}} </span>{{/createdprefix}}{{{createdname}}} <span aria-hidden="true">·</span> <span aria-hidden="true">{{createddate}}</span><span class="visually-hidden">{{createdfulldate}}</span></span>
+                                {{#published}}
+                                    <span title="{{published}}">{{{publishedicon}}}<span class="visually-hidden">{{#str}} publishedby_short, local_nextpool {{/str}} </span>{{{publishedname}}} <span aria-hidden="true">·</span> <span aria-hidden="true">{{publisheddate}}</span><span class="visually-hidden">{{publishedfulldate}}</span></span>
+                                {{/published}}
+                                {{#compareurl}}
+                                    <a class="d-inline-block py-1" href="{{compareurl}}">{{{compareicon}}}{{comparelabel}}</a>
+                                {{/compareurl}}
+                            </p>
+                            {{#changelog}}
+                                {{#changeloglong}}
+                                    <details class="small text-muted mb-1">
+                                        <summary>{{changelogshort}}</summary>
+                                        <div class="mt-1">{{{changelog}}}</div>
+                                    </details>
+                                {{/changeloglong}}
+                                {{^changeloglong}}
+                                    <p class="small text-muted mb-1">{{changelogshort}}</p>
+                                {{/changeloglong}}
+                            {{/changelog}}
+                            {{#h5plibraryhint}}
+                                <div class="alert alert-info mt-1 mb-1">{{{h5plibraryhint}}}</div>
+                            {{/h5plibraryhint}}
+                            {{#showfacts}}
+                                {{> local_nextpool/item_facts }}
+                            {{/showfacts}}
+                        </div>
+                    </section>
+                {{/versions}}
+            </section>
+        </div>
+
+        <div class="local-nextpool-item__aside">
+            {{#hasmetadata}}
+                <section class="local-nextpool-panel p-3 mb-3" aria-labelledby="local-nextpool-details">
+                    <h3 class="h5" id="local-nextpool-details">{{#str}} itemdetails, local_nextpool {{/str}}</h3>
+                    <dl class="local-nextpool-details mb-0">
+                        {{#metadata}}
+                            <dt class="small text-muted fw-normal">{{label}}</dt>
+                            <dd class="mb-2">{{{value}}}</dd>
+                        {{/metadata}}
+                    </dl>
+                </section>
+            {{/hasmetadata}}
+
+            {{#hasauthors}}
+                <section class="local-nextpool-panel p-3 mb-3" aria-labelledby="local-nextpool-authors">
+                    <h3 class="h5" id="local-nextpool-authors">{{#str}} authors, local_nextpool {{/str}}</h3>
+                    <ul class="list-unstyled mb-0">
+                        {{#authors}}
+                            <li>{{{name}}}{{#hasrole}} <span class="text-muted">({{{role}}})</span>{{/hasrole}}</li>
+                        {{/authors}}
+                    </ul>
+                </section>
+            {{/hasauthors}}
+
+            {{#showeditors}}
+                <section class="local-nextpool-panel local-nextpool-editors p-3 mb-3" aria-labelledby="local-nextpool-editors">
+                    <h3 class="h5" id="local-nextpool-editors">{{#str}} itemeditors, local_nextpool {{/str}}</h3>
+                    {{^haseditors}}<p class="text-muted small">{{#str}} itemeditorsnone, local_nextpool {{/str}}</p>{{/haseditors}}
+                    {{#haseditors}}
+                        <ul class="list-unstyled mb-2">
+                            {{#editors}}
+                                <li class="d-flex align-items-center justify-content-between gap-2">{{{name}}}{{{remove}}}</li>
+                            {{/editors}}
+                        </ul>
+                    {{/haseditors}}
+                    {{#addeditorurl}}
+                        <a class="btn btn-secondary btn-sm" href="{{addeditorurl}}">{{#str}} itemeditoradd, local_nextpool {{/str}}</a>
+                    {{/addeditorurl}}
+                </section>
+            {{/showeditors}}
+
+            {{#hascompetencies}}
+                <section class="local-nextpool-panel p-3" aria-labelledby="local-nextpool-competencies">
+                    <h3 class="h5" id="local-nextpool-competencies">{{#str}} competencies, local_nextpool {{/str}}</h3>
+                    <ul class="list-unstyled mb-0 local-nextpool-competencies">
+                        {{#competencies}}
+                            <li class="mb-2">
+                                <strong>{{{name}}}</strong> <span class="text-muted">({{{idnumber}}})</span>
+                                <div class="small">{{level}} <span aria-hidden="true">·</span> {{function}}</div>
+                                {{#notice}}
+                                    <div class="alert alert-warning py-1 px-2 my-1 small">{{notice}}</div>
+                                {{/notice}}
+                                {{#hasobjectives}}
+                                    <ul class="small mb-0">
+                                        {{#objectives}}
+                                            <li>{{#bloom}}<span class="badge bg-light text-dark border">{{bloom}}</span> {{/bloom}}{{{text}}}{{#id}} <span class="text-muted">({{{id}}})</span>{{/id}}</li>
+                                        {{/objectives}}
+                                    </ul>
+                                {{/hasobjectives}}
+                            </li>
+                        {{/competencies}}
+                    </ul>
+                </section>
+            {{/hascompetencies}}
+        </div>
+    </div>
+</div>

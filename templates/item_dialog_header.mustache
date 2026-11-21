@@ -1,0 +1,27 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_nextpool/item_dialog_header
+    Header shared between the preview fallback page and item dialog.
+    Example context (json): {"typefull":"File","versionfull":"Version 1","canplace":false}
+}}
+<div class="local-nextpool-previewheader">
+    {{> local_nextpool/item_summary }}
+    {{#versionnotice}}<p class="alert alert-info">{{versionnotice}}</p>{{/versionnotice}}
+    {{#canplace}}<p><a class="btn btn-primary" href="{{placeurl}}">{{#str}} placeincourse, local_nextpool {{/str}}</a></p>{{/canplace}}
+    {{#placereason}}<p>{{placereason}}</p>{{/placereason}}
+</div>

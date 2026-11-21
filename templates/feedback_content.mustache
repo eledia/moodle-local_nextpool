@@ -1,0 +1,134 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_nextpool/feedback_content
+
+    Content of the section "Feedback" (F08, task81): heading with subscription, filter, form for a new comment,
+    open threads and done threads (collapsed). Forms post to feedback.php; the module local_nextpool/feedback
+    sends them without leaving the page.
+
+    Context variables required for this template:
+    * itemid - int
+    * courseid - int
+    * actionurl - string, feedback.php
+    * sesskey - string
+    * subscribed - bool
+    * subscribeicon - string HTML, decorative icon
+    * subscribehelp - string, what the subscription means now
+    * shownotice - bool, show who can read comments (first comment, q63)
+    * versionoptions - array of value, label, selected: what a new comment is about
+    * filteroptions - array of value, label, selected
+    * isfiltered - bool
+    * open - array of comments, see local_nextpool/feedback_comment
+    * done - array of comments
+    * hasopen, hasdone - bool
+    * donecount - int
+    * empty - bool
+
+    Example context (json):
+    {
+        "itemid": 1, "courseid": 0, "actionurl": "#", "sesskey": "x", "subscribed": false, "subscribeicon": "",
+        "subscribehelp": "You get no notifications.", "shownotice": true,
+        "versionoptions": [{"value": 0, "label": "Item in general", "selected": false}, {"value": 5, "label": "Version 1", "selected": true}],
+        "filteroptions": [{"value": "all", "label": "All comments", "selected": true}],
+        "isfiltered": false, "open": [], "done": [], "hasopen": false, "hasdone": false, "donecount": 0, "empty": true
+    }
+}}
+<div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+    <h3 class="h5 mb-0 flex-grow-1" id="local-nextpool-feedback-heading">{{#str}} feedback, local_nextpool {{/str}}</h3>
+    <form method="post" action="{{actionurl}}" class="d-inline" data-local-nextpool-action="{{#subscribed}}unsubscribe{{/subscribed}}{{^subscribed}}subscribe{{/subscribed}}">
+        <input type="hidden" name="sesskey" value="{{sesskey}}">
+        <input type="hidden" name="itemid" value="{{itemid}}">
+        <input type="hidden" name="courseid" value="{{courseid}}">
+        <input type="hidden" name="action" value="{{#subscribed}}unsubscribe{{/subscribed}}{{^subscribed}}subscribe{{/subscribed}}">
+        <button type="submit" class="btn btn-outline-secondary btn-sm" aria-describedby="local-nextpool-feedback-subscription">
+            {{{subscribeicon}}}{{#subscribed}}{{#str}} unsubscribe, local_nextpool {{/str}}{{/subscribed}}{{^subscribed}}{{#str}} subscribe, local_nextpool {{/str}}{{/subscribed}}
+        </button>
+    </form>
+</div>
+<p class="small text-muted" id="local-nextpool-feedback-subscription">{{subscribehelp}}</p>
+
+<form method="post" action="{{actionurl}}" class="local-nextpool-feedback__new mb-4" data-local-nextpool-action="add">
+    <input type="hidden" name="sesskey" value="{{sesskey}}">
+    <input type="hidden" name="itemid" value="{{itemid}}">
+    <input type="hidden" name="courseid" value="{{courseid}}">
+    <input type="hidden" name="action" value="add">
+    {{#shownotice}}
+        <p class="alert alert-info small py-2" id="local-nextpool-feedback-notice">{{#str}} commentnotice, local_nextpool {{/str}}</p>
+    {{/shownotice}}
+    <div class="mb-2">
+        <label for="local-nextpool-feedback-text" class="form-label">{{#str}} commentnew, local_nextpool {{/str}}</label>
+        <textarea id="local-nextpool-feedback-text" name="content" class="form-control" rows="3" required{{#shownotice}} aria-describedby="local-nextpool-feedback-notice"{{/shownotice}}></textarea>
+    </div>
+    <div class="d-flex flex-wrap align-items-end gap-2">
+        <div>
+            <label for="local-nextpool-feedback-version" class="form-label small mb-1">{{#str}} commentabout, local_nextpool {{/str}}</label>
+            <select id="local-nextpool-feedback-version" name="versionid" class="form-select form-select-sm">
+                {{#versionoptions}}
+                    <option value="{{value}}"{{#selected}} selected{{/selected}}>{{label}}</option>
+                {{/versionoptions}}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm">{{#str}} commentpost, local_nextpool {{/str}}</button>
+    </div>
+</form>
+
+<form method="get" action="{{actionurl}}" class="d-flex flex-wrap align-items-end gap-2 mb-3" data-local-nextpool-action="filter">
+    <input type="hidden" name="itemid" value="{{itemid}}">
+    <input type="hidden" name="courseid" value="{{courseid}}">
+    <div>
+        <label for="local-nextpool-feedback-filter" class="form-label small mb-1">{{#str}} commentfilter, local_nextpool {{/str}}</label>
+        <select id="local-nextpool-feedback-filter" name="filter" class="form-select form-select-sm">
+            {{#filteroptions}}
+                <option value="{{value}}"{{#selected}} selected{{/selected}}>{{label}}</option>
+            {{/filteroptions}}
+        </select>
+    </div>
+    <button type="submit" class="btn btn-secondary btn-sm">{{#str}} filter {{/str}}</button>
+</form>
+
+{{#empty}}
+    <p class="text-muted">{{#isfiltered}}{{#str}} nocommentsfiltered, local_nextpool {{/str}}{{/isfiltered}}{{^isfiltered}}{{#str}} nocomments, local_nextpool {{/str}}{{/isfiltered}}</p>
+{{/empty}}
+{{#hasopen}}
+    <ol class="list-unstyled local-nextpool-feedback__threads mb-3" aria-label="{{#str}} commentsopen, local_nextpool {{/str}}">
+        {{#open}}
+            <li class="local-nextpool-feedback__thread mb-3">
+                {{> local_nextpool/feedback_comment }}
+            </li>
+        {{/open}}
+    </ol>
+{{/hasopen}}
+{{#hasdone}}
+    <h4 class="h6">{{#str}} commentsdone, local_nextpool, {{donecount}} {{/str}}</h4>
+    <ol class="list-unstyled local-nextpool-feedback__threads local-nextpool-feedback__threads--done mb-0">
+        {{#done}}
+            <li class="local-nextpool-feedback__thread mb-2">
+                <details class="local-nextpool-feedback__done">
+                    <summary class="small">
+                        <span class="badge bg-success">{{#str}} commentdone, local_nextpool {{/str}}</span>
+                        {{#deleted}}{{#str}} commentremoved, local_nextpool {{/str}}{{/deleted}}{{^deleted}}{{authorname}} · {{date}}{{/deleted}}
+                        <span aria-hidden="true">·</span> {{resolvedtext}}
+                    </summary>
+                    <div class="pt-2">
+                        {{> local_nextpool/feedback_comment }}
+                    </div>
+                </details>
+            </li>
+        {{/done}}
+    </ol>
+{{/hasdone}}
